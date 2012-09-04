@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:broker="http://activemq.apache.org/schema/core" xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.5.0.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+        <route id="searchItem">
+            <from uri="file:/projects/servicemix-example/data/dropsearch"/>
+            <to uri="jms:search-requests"/>
+        </route>
+
+        <route id="doSearch">
+            <from uri="jms:search-requests"/>
+            <to uri="jetty://http://www.google.com/ig/api?stock=NOK"/>
+            <to uri="file:/projects/servicemix-example/data/dropsearch-out"/>
+        </route>
+
+        <route id="publish">
+            <from uri="file:/projects/servicemix-example/data/dropsearch-out"/>
+            <to uri="xslt://file:/projects/servicemix-example/src/main/resources/SingleQuote.xsl"/>
+            <to uri="file:/projects/servicemix-example/data/www"/>
+        </route>
+
+    </camelContext>
+
+    <bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+        <property name="connectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL" value="tcp://localhost:61616"/>
+            </bean>
+        </property>
+    </bean>
+
+</beans>
