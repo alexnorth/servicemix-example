@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="PersonService" targetNamespace="http://example.servicemix/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://example.servicemix/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://example.servicemix/" version="1.0">
+<xs:element name="GetPerson">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="personId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+<xs:element name="GetPersonResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="personId" type="xs:string"/>
+        <xs:element name="ssn" type="xs:string"/>
+        <xs:element name="name" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+<xs:element name="UnknownPersonFault">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="personId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="UnknownPersonFault">
+    <wsdl:part name="UnknownPersonFault" element="tns:UnknownPersonFault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetPerson">
+    <wsdl:part name="parameters" element="tns:GetPerson">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetPersonResponse">
+    <wsdl:part name="parameters" element="tns:GetPersonResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Person">
+    <wsdl:operation name="GetPerson">
+      <wsdl:input name="GetPerson" message="tns:GetPerson">
+    </wsdl:input>
+      <wsdl:output name="GetPersonResponse" message="tns:GetPersonResponse">
+    </wsdl:output>
+      <wsdl:fault name="UnknownPersonFault" message="tns:UnknownPersonFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PersonServiceSoapBinding" type="tns:Person">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetPerson">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="GetPerson">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetPersonResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="UnknownPersonFault">
+        <soap:fault name="UnknownPersonFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PersonService">
+    <wsdl:port name="PersonPort" binding="tns:PersonServiceSoapBinding">
+      <soap:address location="http://localhost:9090/PersonPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

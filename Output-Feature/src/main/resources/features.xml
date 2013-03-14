@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+  <feature name="output-feature">
+      <bundle>mvn:servicemix.example/Output-One/1.0-SNAPSHOT</bundle>
+      <bundle>mvn:servicemix.example/Output-Two/1.0-SNAPSHOT</bundle>
+  </feature>
+</features>

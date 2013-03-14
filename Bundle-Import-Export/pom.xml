@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>servicemix.example</groupId>
+        <artifactId>servicemix-example</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <groupId>servicemix.example</groupId>
+    <artifactId>Bundle-Import-Export</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+    <name>Bundle-Import-Export</name>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${maven-bundle-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Activator>servicemix.example.implementation.SomeImplementation</Bundle-Activator>
+                        <Import-Package>
+                            <!-- this package is needed by this bundle but the bnd tool can't "see" it so we must add it ourselves -->
+                            servicemix.example.support,
+                            <!-- the asterisk tells the bnd tool to figure out what imports are needed -->
+                            *
+                        </Import-Package>
+                        <!-- we only export the classes we want publicly available-->
+                        <Export-Package>servicemix.example.api</Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

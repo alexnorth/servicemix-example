@@ -13,11 +13,7 @@ public class SomeImplementation implements BundleActivator, SomeInterface {
     Logger logger = LoggerFactory.getLogger(SomeImplementation.class);
 
     public void doSomething(String append) {
-        logger.debug("This is a debug message from "+ append);
-        logger.error("This is an error message from "+ append);
-        logger.info("This is a info message from "+ append);
-        logger.trace("This is a trace message from "+ append);
-        logger.warn("This is a warning message from "+ append);
+        logger.info("Bundle [SomeImplementation] has been told to doSomething("+ append +")");
     }
 
     // this is here to hide the servicemix.example.support package from the bnd tool so that we are forced to explicitly
@@ -39,11 +35,6 @@ public class SomeImplementation implements BundleActivator, SomeInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String useThese(int number, String text) {
-        // this implementation just adds the number to the end of the text
-        return text +" "+ number;
     }
 
     public void start(BundleContext bundleContext) throws Exception {
